@@ -109,11 +109,20 @@ export default function MapSection({
   // We change the key of the GeoJSON component to force it to re-render when selections or data updates.
   const layerKey = `${selectedYear}_${dbdData.length}_${selectedDistrict || "none"}`;
 
+  // East Java geographic bounds for restriction
+  const bounds = [
+    [-9.2, 110.0], // Southwest coordinates (Pacitan/South)
+    [-6.3, 116.2]  // Northeast coordinates (Sumenep/North)
+  ];
+
   return (
     <div className="relative h-[480px] w-full rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner">
       <MapContainer
         center={center}
         zoom={zoom}
+        minZoom={7.5}
+        maxBounds={bounds}
+        maxBoundsViscosity={1.0}
         scrollWheelZoom={true}
         className="h-full w-full"
       >
