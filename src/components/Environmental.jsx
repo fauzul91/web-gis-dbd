@@ -17,7 +17,7 @@ const TABS = [
   { id: "kelembaban", label: "Kelembaban", unit: "%", icon: "💧", desc: "Kelembaban udara rata-rata" },
   { id: "sanitasi_layak", label: "Sanitasi Layak", unit: "%", icon: "🏠", desc: "Persentase cakupan sanitasi bersih" },
   { id: "kepadatan_penduduk", label: "Kepadatan Penduduk", unit: "jiwa/km²", icon: "👥", desc: "Rasio kepadatan pemukiman" },
-  { id: "rasio_puskesmas", label: "Rasio Puskesmas", unit: "per 10rb pdk", icon: "🏥", desc: "Jumlah Puskesmas per 10.000 penduduk" },
+  { id: "rasio_puskesmas", label: "Rasio Puskesmas", unit: "per 100rb pdk", icon: "🏥", desc: "Jumlah Puskesmas per 100.000 penduduk" },
 ];
 
 export default function Environmental({ dbdData = [], selectedYear }) {

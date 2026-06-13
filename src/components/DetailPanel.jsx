@@ -145,7 +145,7 @@ export default function DetailPanel({
                 <span className="text-sm font-semibold">Kepadatan Penduduk</span>
               </div>
               <span className="text-sm font-extrabold text-slate-800 dark:text-slate-100">
-                {districtData.kepadatan_penduduk.toLocaleString()} jw/km²
+                {districtData.kepadatan_penduduk.toLocaleString()} jiwa/km²
               </span>
             </div>
 
@@ -156,7 +156,7 @@ export default function DetailPanel({
                 <span className="text-sm font-semibold">Rasio Puskesmas</span>
               </div>
               <span className="text-sm font-extrabold text-slate-800 dark:text-slate-100">
-                {districtData.rasio_puskesmas.toFixed(2)} <span className="text-[10px] font-normal text-slate-400">/10rb</span>
+                {districtData.rasio_puskesmas.toFixed(2)} <span className="text-[10px] font-normal text-slate-400">/100rb</span>
               </span>
             </div>
           </div>

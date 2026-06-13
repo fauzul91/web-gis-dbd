@@ -64,7 +64,7 @@ export const generateComparativeInsight = (district, allDistricts) => {
   }
 
   // Health Center ratio context
-  text += `Rasio pusat kesehatan masyarakat (Puskesmas) adalah **${district.rasio_puskesmas.toFixed(2)} per 10.000 penduduk** (rata-rata Jatim: ${avgRp.toFixed(2)}). `;
+  text += `Rasio pusat kesehatan masyarakat (Puskesmas) adalah **${district.rasio_puskesmas.toFixed(2)} per 100.000 penduduk** (rata-rata Jatim: ${avgRp.toFixed(2)}). `;
 
   // Actionable advice
   text += `\n\n**Rekomendasi Tindakan:** `;
