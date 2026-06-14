@@ -5,18 +5,21 @@ import {
   Trash2, ShieldCheck, Home, 
   Users, Activity, X 
 } from "lucide-react";
+import { getRiskCategory } from "../utils/riskLevels";
 
-const getRiskColor = (ir) => {
-  if (ir <= 10) return "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
-  if (ir <= 20) return "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800";
-  if (ir <= 30) return "bg-orange-100 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300 border-orange-200 dark:border-orange-800";
+const getRiskColor = (ir, year) => {
+  const cat = getRiskCategory(ir, year);
+  if (cat === 0) return "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
+  if (cat === 1) return "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800";
+  if (cat === 2) return "bg-orange-100 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300 border-orange-200 dark:border-orange-800";
   return "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800";
 };
 
-const getRiskLabel = (ir) => {
-  if (ir <= 10) return "Risiko Rendah";
-  if (ir <= 20) return "Risiko Sedang";
-  if (ir <= 30) return "Risiko Tinggi";
+const getRiskLabel = (ir, year) => {
+  const cat = getRiskCategory(ir, year);
+  if (cat === 0) return "Risiko Rendah";
+  if (cat === 1) return "Risiko Sedang";
+  if (cat === 2) return "Risiko Tinggi";
   return "Risiko Sangat Tinggi";
 };
 
@@ -45,8 +48,8 @@ export default function DetailPanel({
   }
 
   const ir = districtData.ir_dbd;
-  const badgeClass = getRiskColor(ir);
-  const riskLabel = getRiskLabel(ir);
+  const badgeClass = getRiskColor(ir, districtData.tahun);
+  const riskLabel = getRiskLabel(ir, districtData.tahun);
 
   // Generate the comparative insight markdown
   const insightText = generateComparativeInsight(districtData, allDistrictsData);

@@ -2,19 +2,22 @@ import React, { useRef, useEffect } from "react";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { getRiskCategory, yearlyThresholds } from "../utils/riskLevels";
 
 // Risk styling helpers
-const getRiskColor = (ir) => {
-  if (ir <= 10) return "#10B981"; // Green (Low)
-  if (ir <= 20) return "#F59E0B"; // Yellow (Moderate)
-  if (ir <= 30) return "#F97316"; // Orange (High)
+const getRiskColor = (ir, year) => {
+  const cat = getRiskCategory(ir, year);
+  if (cat === 0) return "#10B981"; // Green (Low)
+  if (cat === 1) return "#F59E0B"; // Yellow (Moderate)
+  if (cat === 2) return "#F97316"; // Orange (High)
   return "#EF4444"; // Red (Very High)
 };
 
-const getRiskLabel = (ir) => {
-  if (ir <= 10) return "Risiko Rendah";
-  if (ir <= 20) return "Risiko Sedang";
-  if (ir <= 30) return "Risiko Tinggi";
+const getRiskLabel = (ir, year) => {
+  const cat = getRiskCategory(ir, year);
+  if (cat === 0) return "Risiko Rendah";
+  if (cat === 1) return "Risiko Sedang";
+  if (cat === 2) return "Risiko Tinggi";
   return "Risiko Sangat Tinggi";
 };
 
@@ -47,7 +50,7 @@ export default function MapSection({
     const isSelected = selectedDistrict && data && data.kabupaten_kota.toLowerCase() === selectedDistrict.toLowerCase();
 
     return {
-      fillColor: getRiskColor(ir),
+      fillColor: getRiskColor(ir, selectedYear),
       weight: isSelected ? 3.5 : 1.5,
       opacity: 1,
       color: isSelected ? "#0F766E" : "#FFFFFF", // Teal border for selected
@@ -60,8 +63,8 @@ export default function MapSection({
     const data = getFeatureData(feature);
     const name = feature.properties.NAME_2 || "Tidak Diketahui";
     const ir = data ? data.ir_dbd : 0;
-    const category = getRiskLabel(ir);
-    const color = getRiskColor(ir);
+    const category = getRiskLabel(ir, selectedYear);
+    const color = getRiskColor(ir, selectedYear);
 
     // Setup hover events
     layer.on({
@@ -115,6 +118,9 @@ export default function MapSection({
     [-6.3, 116.2]  // Northeast coordinates (Sumenep/North)
   ];
 
+  // Get legend labels for the selected year
+  const currentLabels = (yearlyThresholds[selectedYear] || yearlyThresholds[2025]).labels;
+
   return (
     <div className="relative h-[480px] w-full rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner">
       <MapContainer
@@ -148,19 +154,19 @@ export default function MapSection({
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded bg-[#10B981] flex-shrink-0" />
-            <span>Rendah (0–10)</span>
+            <span>{currentLabels[0]}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded bg-[#F59E0B] flex-shrink-0" />
-            <span>Sedang (10–20)</span>
+            <span>{currentLabels[1]}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded bg-[#F97316] flex-shrink-0" />
-            <span>Tinggi (20–30)</span>
+            <span>{currentLabels[2]}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded bg-[#EF4444] flex-shrink-0" />
-            <span>Sangat Tinggi (&gt;30)</span>
+            <span>{currentLabels[3]}</span>
           </div>
         </div>
         <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-2 font-normal leading-tight">
@@ -170,3 +176,4 @@ export default function MapSection({
     </div>
   );
 }
+
