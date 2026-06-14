@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Droplets, Shield, RefreshCw, Bug } from "lucide-react";
+import { Droplets, Shield, RefreshCw, Bug, BookOpen } from "lucide-react";
 
 const CARDS = [
   {
@@ -38,8 +38,9 @@ export default function Education() {
     <div className="space-y-10">
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <h3 className="text-3xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">
-          💡 Panduan Praktis Pemberantasan Sarang Nyamuk (PSN)
+        <h3 className="text-3xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight leading-tight flex flex-col sm:flex-row items-center justify-center gap-2.5">
+          <BookOpen size={28} className="text-teal-600 dark:text-teal-400 flex-shrink-0" />
+          <span>Panduan Praktis Pemberantasan Sarang Nyamuk (PSN)</span>
         </h3>
         <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-light">
           Langkah mudah dan efektif 3M Plus yang dapat dilakukan secara mandiri oleh masyarakat untuk menghentikan pengembangbiakan nyamuk pembawa virus dengue.

@@ -27,6 +27,8 @@ export default function MapSection({
   selectedYear,
   selectedDistrict,
   onSelectDistrict,
+  className,
+  darkMode,
 }) {
   const geojsonRef = useRef(null);
 
@@ -122,7 +124,7 @@ export default function MapSection({
   const currentLabels = (yearlyThresholds[selectedYear] || yearlyThresholds[2025]).labels;
 
   return (
-    <div className="relative h-[480px] w-full rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner">
+    <div className={`relative overflow-hidden ${className || "h-[480px] w-full rounded-2xl border border-slate-200 dark:border-slate-800 shadow-inner"}`}>
       <MapContainer
         center={center}
         zoom={zoom}
@@ -133,8 +135,9 @@ export default function MapSection({
         className="h-full w-full"
       >
         <TileLayer
+          key={darkMode ? "dark" : "light"}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CartoDB</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          url={darkMode ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
         />
 
         {geojson && (

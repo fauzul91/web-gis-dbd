@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Building2, Calendar, TrendingUp, AlertTriangle } from "lucide-react";
+import { MapPin, Calendar, Activity, ShieldAlert } from "lucide-react";
 
 // Custom animated counter component using Framer Motion
 const AnimatedCounter = ({ from = 0, to, duration = 1.5, decimals = 0 }) => {
@@ -45,7 +45,7 @@ export default function Stats({ globalInsights, selectedYear }) {
             className="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-5"
           >
             <div className="h-12 w-12 rounded-xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center flex-shrink-0">
-              <Building2 size={24} />
+              <MapPin size={24} />
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Wilayah</p>
@@ -79,7 +79,7 @@ export default function Stats({ globalInsights, selectedYear }) {
             className="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-5"
           >
             <div className="h-12 w-12 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
-              <TrendingUp size={24} />
+              <Activity size={24} />
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">IR DBD Tertinggi</p>
@@ -96,7 +96,7 @@ export default function Stats({ globalInsights, selectedYear }) {
             className="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-5"
           >
             <div className="h-12 w-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0">
-              <AlertTriangle size={24} />
+              <ShieldAlert size={24} />
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Risiko Tertinggi</p>

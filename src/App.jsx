@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useDBDData } from "./hooks/useDBDData";
 import { generateGlobalInsights } from "./utils/insightsGenerator";
 import { ShieldAlert, Loader2, RefreshCw, Sun, Moon } from "lucide-react";
@@ -13,6 +13,7 @@ import Environmental from "./components/Environmental";
 import InsightsSummary from "./components/InsightsSummary";
 import Education from "./components/Education";
 import Footer from "./components/Footer";
+import MapPage from "./components/MapPage";
 
 export default function App() {
   const { dbdData, geojson, loading, error } = useDBDData();
@@ -20,6 +21,44 @@ export default function App() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState(() => {
+    return window.location.pathname === "/map" ? "map" : "home";
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(window.location.pathname === "/map" ? "map" : "home");
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigateTo = (page) => {
+    const path = page === "map" ? "/map" : "/";
+    window.history.pushState({}, "", path);
+    setCurrentPage(page);
+  };
+
+  // SEO updates (Title & Meta Description)
+  useEffect(() => {
+    if (currentPage === "map") {
+      document.title = "Peta Interaktif Risiko DBD Jawa Timur 2020 - 2025 | Spago";
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.content = "Peta spasial interaktif sebaran kasus Demam Berdarah Dengue (DBD) di 38 kabupaten/kota Jawa Timur beserta analisis faktor risiko lingkungan dan sosial.";
+    } else {
+      document.title = "Monitoring & Analisis Persebaran DBD Jawa Timur | Spago";
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.content = "Platform monitoring kasus Demam Berdarah Dengue (DBD) Jawa Timur. Visualisasi data tren, pemeringkatan daerah, dan korelasi faktor lingkungan.";
+      }
+    }
+  }, [currentPage]);
+
 
   // Toggle dark mode classes on html element
   const toggleDarkMode = () => {
@@ -104,6 +143,24 @@ export default function App() {
     );
   }
 
+  if (currentPage === "map") {
+    return (
+      <MapPage
+        geojson={geojson}
+        dbdData={dbdData}
+        selectedYear={selectedYear}
+        setSelectedYear={setSelectedYear}
+        selectedDistrict={activeDistrict}
+        setSelectedDistrict={setSelectedDistrict}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onBackHome={() => navigateTo("home")}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 font-sans">
       
@@ -119,7 +176,7 @@ export default function App() {
           {/* Navigation Links */}
           <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-500 dark:text-slate-400">
             <button onClick={() => scrollToId("hero")} className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-pointer">Landing Page</button>
-            <button onClick={() => scrollToId("dashboard-anchor")} className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-pointer">Peta Risiko</button>
+            <button onClick={() => navigateTo("map")} className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-pointer text-teal-600 dark:text-teal-400 font-bold">Peta Interaktif</button>
             <button onClick={() => scrollToId("tren-anchor")} className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-pointer">Tren & Ranking</button>
             <button onClick={() => scrollToId("faktor-anchor")} className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-pointer">Faktor Korelasi</button>
             <button onClick={() => scrollToId("edukasi-anchor")} className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-pointer">Panduan PSN</button>
@@ -139,7 +196,7 @@ export default function App() {
       {/* Hero Section */}
       <div id="hero">
         <Hero 
-          onExploreMap={() => scrollToId("dashboard-anchor")} 
+          onExploreMap={() => navigateTo("map")} 
           onExploreTrend={() => scrollToId("tren-anchor")} 
         />
       </div>
@@ -172,9 +229,17 @@ export default function App() {
                 <h3 className="font-extrabold text-slate-800 dark:text-slate-100 text-lg">Peta Risiko Kasus DBD Jatim</h3>
                 <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Klasifikasi tingkat kerawanan berdasarkan Incidence Rate wilayah</p>
               </div>
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200/50 dark:border-teal-900 text-teal-700 dark:text-teal-400">
-                Tahun {selectedYear}
-              </span>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => navigateTo("map")}
+                  className="text-xs font-extrabold px-3.5 py-1.5 rounded-xl bg-teal-700 text-white dark:bg-teal-400 dark:text-slate-950 hover:bg-teal-600 dark:hover:bg-teal-300 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] cursor-pointer shadow-sm"
+                >
+                  Buka Peta Mode Penuh &rarr;
+                </button>
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200/50 dark:border-teal-900 text-teal-700 dark:text-teal-400">
+                  Tahun {selectedYear}
+                </span>
+              </div>
             </div>
 
             <MapSection
@@ -186,6 +251,7 @@ export default function App() {
                 setSelectedDistrict(dist);
                 setSearchTerm("");
               }}
+              darkMode={darkMode}
             />
           </div>
 

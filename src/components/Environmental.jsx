@@ -10,14 +10,15 @@ import {
   ResponsiveContainer,
   ZAxis,
 } from "recharts";
+import { CloudRain, Thermometer, Droplets, Home, Users, ShieldCheck, BarChart2 } from "lucide-react";
 
 const TABS = [
-  { id: "curah_hujan", label: "Curah Hujan", unit: "mm", icon: "🌧", desc: "Curah hujan bulanan rata-rata" },
-  { id: "suhu", label: "Suhu Udara", unit: "°C", icon: "🌡", desc: "Suhu rata-rata permukaan" },
-  { id: "kelembaban", label: "Kelembaban", unit: "%", icon: "💧", desc: "Kelembaban udara rata-rata" },
-  { id: "sanitasi_layak", label: "Sanitasi Layak", unit: "%", icon: "🏠", desc: "Persentase cakupan sanitasi bersih" },
-  { id: "kepadatan_penduduk", label: "Kepadatan Penduduk", unit: "jiwa/km²", icon: "👥", desc: "Rasio kepadatan pemukiman" },
-  { id: "rasio_puskesmas", label: "Rasio Puskesmas", unit: "per 100rb pdk", icon: "🏥", desc: "Jumlah Puskesmas per 100.000 penduduk" },
+  { id: "curah_hujan", label: "Curah Hujan", unit: "mm", icon: CloudRain, desc: "Curah hujan bulanan rata-rata" },
+  { id: "suhu", label: "Suhu Udara", unit: "°C", icon: Thermometer, desc: "Suhu rata-rata permukaan" },
+  { id: "kelembaban", label: "Kelembaban", unit: "%", icon: Droplets, desc: "Kelembaban udara rata-rata" },
+  { id: "sanitasi_layak", label: "Sanitasi Layak", unit: "%", icon: Home, desc: "Persentase cakupan sanitasi bersih" },
+  { id: "kepadatan_penduduk", label: "Kepadatan Penduduk", unit: "jiwa/km²", icon: Users, desc: "Rasio kepadatan pemukiman" },
+  { id: "rasio_puskesmas", label: "Rasio Puskesmas", unit: "per 100rb pdk", icon: ShieldCheck, desc: "Jumlah Puskesmas per 100.000 penduduk" },
 ];
 
 export default function Environmental({ dbdData = [], selectedYear }) {
@@ -101,8 +102,9 @@ export default function Environmental({ dbdData = [], selectedYear }) {
       {/* Header */}
       <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h3 className="font-bold text-slate-800 dark:text-slate-100 text-lg">
-            🔬 Analisis Korelasi Faktor Lingkungan & Sosial
+          <h3 className="font-bold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2">
+            <BarChart2 size={20} className="text-teal-600 dark:text-teal-400" />
+            <span>Analisis Korelasi Faktor Lingkungan & Sosial</span>
           </h3>
           <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
             Gunakan grafik scatter plot untuk menganalisis hubungan sebab-akibat antara faktor eksternal dengan tingkat kejadian DBD.
@@ -133,7 +135,7 @@ export default function Environmental({ dbdData = [], selectedYear }) {
                 : "bg-slate-50 hover:bg-slate-100 dark:bg-slate-900/30 dark:hover:bg-slate-900/60 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700"
             }`}
           >
-            <span>{tab.icon}</span>
+            <tab.icon size={16} className={activeTab === tab.id ? "text-white" : "text-teal-600 dark:text-teal-400"} />
             <span>{tab.label}</span>
           </button>
         ))}
@@ -141,7 +143,10 @@ export default function Environmental({ dbdData = [], selectedYear }) {
 
       {/* Description Info */}
       <div className="bg-slate-50 dark:bg-slate-900/20 p-4 rounded-xl text-xs text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-slate-800/80 mb-6">
-        <span className="font-bold text-teal-600 dark:text-teal-400">{activeTabInfo.icon} {activeTabInfo.label}: </span>
+        <span className="font-bold text-teal-600 dark:text-teal-400 inline-flex items-center gap-1.5 mr-1.5 mb-1 sm:mb-0 sm:inline-flex">
+          <activeTabInfo.icon size={14} className="text-teal-600 dark:text-teal-400" />
+          <span>{activeTabInfo.label}: </span>
+        </span>
         <span>{activeTabInfo.desc}. Arah korelasi: <strong>{corrInfo.direction}</strong>. </span>
         {correlation > 0.3 && (
           <span>Korelasi positif ini menunjukkan bahwa wilayah dengan <strong>{activeTabInfo.label.toLowerCase()} tinggi</strong> cenderung memiliki <strong>kejadian DBD yang lebih tinggi</strong> pula.</span>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Search, RotateCcw, Calendar, MapPin } from "lucide-react";
+import { RotateCcw, Calendar, MapPin } from "lucide-react";
 
 export default function FilterSection({
   selectedYear,
@@ -18,7 +18,7 @@ export default function FilterSection({
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         
         {/* Filters Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-grow max-w-4xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-grow max-w-2xl">
           
           {/* Year Filter */}
           <div className="relative">
@@ -62,25 +62,6 @@ export default function FilterSection({
                 </option>
               ))}
             </select>
-          </div>
-
-          {/* Text Search */}
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-teal-600 dark:text-teal-400">
-              <Search size={18} />
-            </span>
-            <input
-              type="text"
-              placeholder="Cari kabupaten/kota..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                if (e.target.value) {
-                  setSelectedDistrict(""); // Reset dropdown filter if searching by text
-                }
-              }}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all duration-200"
-            />
           </div>
 
         </div>
